@@ -2,13 +2,11 @@
   setup
   lang="ts"
 >
-import { ref } from 'vue'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { ControlButton, Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 import { initialEdges, initialNodes } from '../initial-elements.js'
-import FlowIcon from './FlowIcon.vue'
 
 /**
  * useVueFlow provides all event handlers and store properties
@@ -20,8 +18,16 @@ const nodes = ref(initialNodes)
 
 const edges = ref(initialEdges)
 
-// our dark mode toggle flag
-const dark = ref(false)
+// Utilizziamo il tema condiviso invece della variabile locale
+const { isDark } = useAppTheme()
+
+// Classe computata in base al tema
+const flowClass = computed(() => {
+  return {
+    basicflow: true,
+    dark: isDark.value
+  }
+})
 
 /**
  * This is a Vue Flow event-hook which can be listened to from anywhere you call the composable, instead of only on the main component
@@ -86,24 +92,19 @@ function logToObject() {
 function resetTransform() {
   setViewport({ x: 0, y: 0, zoom: 1 })
 }
-
-function toggleDarkMode() {
-  dark.value = !dark.value
-}
 </script>
 
 <template>
   <VueFlow
     :nodes="nodes"
     :edges="edges"
-    :class="{ dark }"
-    class="basicflow"
+    :class="flowClass"
     :default-viewport="{ zoom: 1.5 }"
     :min-zoom="0.2"
     :max-zoom="4"
   >
     <Background
-      pattern-color="#aaa"
+      :pattern-color="isDark ? '#aaa' : '#aaa'"
       :gap="16"
     />
 
@@ -122,20 +123,6 @@ function toggleDarkMode() {
         @click="updatePos"
       >
         <FlowIcon name="update" />
-      </ControlButton>
-
-      <ControlButton
-        title="Toggle Dark Mode"
-        @click="toggleDarkMode"
-      >
-        <FlowIcon
-          v-if="dark"
-          name="sun"
-        />
-        <FlowIcon
-          v-else
-          name="moon"
-        />
       </ControlButton>
 
       <ControlButton
