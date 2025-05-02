@@ -2,6 +2,7 @@
   "name": "topflo-monorepo",
   "private": true,
   "workspaces": [
-    "basic-example"
+    "basic-example",
+    "all-examples"
   ]
 }
