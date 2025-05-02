@@ -2,11 +2,5 @@
   lang="ts"
   setup
 >
-//
+await navigateTo('/add-random');
 </script>
-
-<template>
-  <div style="height: 100%">
-    <FlowChart />
-  </div>
-</template>

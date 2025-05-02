@@ -1,12 +1,7 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer">
-      <!--  -->
-    </v-navigation-drawer>
 
     <v-app-bar>
-      <v-app-bar-nav-icon @click="drawer = !drawer" />
-
       <v-app-bar-title>Application</v-app-bar-title>
       
       <v-spacer/>
@@ -28,7 +23,6 @@
   setup
   lang="ts"
 >
-const drawer = ref(false)
 const appTheme = useAppTheme()
 
 const toggleDarkMode = () => {
