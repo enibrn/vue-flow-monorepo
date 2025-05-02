@@ -3,6 +3,6 @@
   "private": true,
   "workspaces": [
     "basic-example",
-    "all-examples"
+    "showcase"
   ]
 }
