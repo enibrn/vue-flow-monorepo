@@ -28,12 +28,12 @@
   setup
   lang="ts"
 >
-const drawer = ref(false)
-const appTheme = useAppTheme()
+const drawer = ref(false);
+const appTheme = useAppTheme();
 
 const toggleDarkMode = () => {
-  appTheme.toggleDarkMode()
-}
+  appTheme.toggleDarkMode();
+};
 </script>
 
 <style>
