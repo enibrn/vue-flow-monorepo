@@ -2,5 +2,5 @@
   lang="ts"
   setup
 >
-await navigateTo('/add-random');
+await navigateTo('/basic');
 </script>

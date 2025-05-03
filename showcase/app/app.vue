@@ -1,7 +1,14 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer">
-      <!--  -->
+      <v-list>
+        <v-list-item
+          v-for="route in pageRoutes"
+          :key="route.path"
+          :to="route.path"
+          :title="formatRouteTitle(route)"
+        />
+      </v-list>
     </v-navigation-drawer>
 
     <v-app-bar>
@@ -28,8 +35,30 @@
   setup
   lang="ts"
 >
+import { ref, computed } from 'vue';
+import { useRouter, type RouteRecordNormalized } from 'vue-router';
+
 const drawer = ref(false);
 const appTheme = useAppTheme();
+const router = useRouter();
+
+// Get all routes and filter out index.vue
+const pageRoutes = computed(() => {
+  console.log('router', router.getRoutes());
+  return router
+    .getRoutes()
+    .filter(route => route.name !== 'index');
+});
+
+// Format route name to capitalized title
+// Example: "add-random" becomes "Add Random"
+const formatRouteTitle = (route: RouteRecordNormalized) => {
+  const routeName = String(route.name);
+  return routeName
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
 
 const toggleDarkMode = () => {
   appTheme.toggleDarkMode();
