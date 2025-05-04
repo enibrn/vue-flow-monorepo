@@ -1,50 +1,16 @@
-<template>
-  <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer">
-      <v-list>
-        <v-list-item
-          v-for="route in pageRoutes"
-          :key="route.path"
-          :to="route.path"
-          :title="formatRouteTitle(route)"
-        />
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-app-bar>
-      <v-app-bar-nav-icon @click="drawer = !drawer" />
-
-      <v-app-bar-title>Application</v-app-bar-title>
-      
-      <v-spacer/>
-      
-      <v-btn icon @click="toggleDarkMode">
-        <v-icon>
-          {{ appTheme.isDark ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
-        </v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-main>
-      <NuxtPage />
-    </v-main>
-  </v-app>
-</template>
-
 <script
   setup
   lang="ts"
 >
-import { ref, computed } from 'vue';
-import { useRouter, type RouteRecordNormalized } from 'vue-router';
+import type { RouteRecordNormalized } from 'vue-router';
 
 const drawer = ref(false);
 const appTheme = useAppTheme();
 const router = useRouter();
+const route = useRoute();
 
 // Get all routes and filter out index.vue
 const pageRoutes = computed(() => {
-  console.log('router', router.getRoutes());
   return router
     .getRoutes()
     .filter(route => route.name !== 'index');
@@ -60,10 +26,60 @@ const formatRouteTitle = (route: RouteRecordNormalized) => {
     .join(' ');
 };
 
-const toggleDarkMode = () => {
-  appTheme.toggleDarkMode();
+const switchAppTheme = () => appTheme.switch();
+
+watch(
+  () => route.fullPath,
+  () => checkDarkModeFlag()
+);
+
+const isDarkModeDisabled = computed(() => route.meta.disableDarkMode === true);
+
+const checkDarkModeFlag = () => {
+  if (!appTheme.isDark.value || !isDarkModeDisabled.value) return;    
+
+  switchAppTheme();
 };
+
 </script>
+
+<template>
+  <v-app id="inspire">
+    <v-navigation-drawer v-model="drawer">
+      <v-list>
+        <v-list-item
+          v-for="pageRoute in pageRoutes"
+          :key="pageRoute.path"
+          :to="pageRoute.path"
+          :title="formatRouteTitle(pageRoute)"
+        />
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar>
+      <v-app-bar-nav-icon @click="drawer = !drawer" />
+
+      <v-app-bar-title>Application</v-app-bar-title>
+
+      <v-spacer />
+
+      <v-btn
+        icon
+        :disabled="isDarkModeDisabled"
+        title="Switch theme"
+        @click="appTheme.switch"
+      >
+        <v-icon>
+          {{ appTheme.isDark ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
+        </v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main>
+      <NuxtPage />
+    </v-main>
+  </v-app>
+</template>
 
 <style>
 @import './style.css';
