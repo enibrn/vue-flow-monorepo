@@ -26,6 +26,9 @@ const formatRouteTitle = (route: RouteRecordNormalized) => {
     .join(' ');
 };
 
+const snackbar = ref(false);
+const snackbarText = ref('');
+
 const switchAppTheme = () => appTheme.switch();
 
 watch(
@@ -36,7 +39,10 @@ watch(
 const isDarkModeDisabled = computed(() => route.meta.disableDarkMode === true);
 
 const checkDarkModeFlag = () => {
-  if (!appTheme.isDark.value || !isDarkModeDisabled.value) return;    
+  if (!appTheme.isDark.value || !isDarkModeDisabled.value) return;
+
+  snackbarText.value = 'Dark mode is disabled on this page';
+  snackbar.value = true;
 
   switchAppTheme();
 };
@@ -78,6 +84,20 @@ const checkDarkModeFlag = () => {
     <v-main>
       <NuxtPage />
     </v-main>
+
+    <v-snackbar v-model="snackbar">
+      {{ snackbarText }}
+
+      <template #actions>
+        <v-btn
+          color="pink"
+          variant="text"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
