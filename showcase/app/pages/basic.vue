@@ -1,5 +1,3 @@
 <template>
-  <div style="height: 100%">
-    <BasicFlow />
-  </div>
+  <Basic />
 </template>
