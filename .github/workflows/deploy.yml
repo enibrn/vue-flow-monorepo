@@ -14,14 +14,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      # Pick your own package manager and build script
-      - run: cd ./showcase/
-      - run: npm install
-      - run: npx nuxt build --preset github_pages
+      # Install and build inside the showcase directory
+      - name: Install dependencies
+        working-directory: ./showcase
+        run: npm install
+      - name: Build website
+        working-directory: ./showcase
+        run: npx nuxt build --preset github_pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./.output/public
+          path: ./showcase/.output/public
   # Deployment job
   deploy:
     # Add a dependency to the build job
