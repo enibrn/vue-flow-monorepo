@@ -25,7 +25,7 @@ jobs:
       - name: Build website
         run: |
           cd ./showcase
-          bunx nuxt build --preset github_pages
+          NUXT_APP_BASE_URL=/vue-flow-monorepo/ bunx nuxt build --preset github_pages
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
