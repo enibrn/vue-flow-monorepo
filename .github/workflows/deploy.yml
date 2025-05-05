@@ -16,7 +16,6 @@ jobs:
           node-version: "20"
       # Install and build inside the showcase directory
       - name: Install dependencies
-        working-directory: ./showcase
         run: npm install
       - name: Build website
         working-directory: ./showcase
