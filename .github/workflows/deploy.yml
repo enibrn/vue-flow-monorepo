@@ -10,20 +10,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: corepack enable
-      - uses: actions/setup-node@v4
+      
+      # Install Bun (without the Node.js setup)
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: "20"
-      # Install and build inside the showcase directory
+          bun-version: latest
+      
+      # Install dependencies using Bun
       - name: Install dependencies
-        run: npm install
+        run: bun install
+      
+      # Build website using Bun with cd command
       - name: Build website
-        working-directory: ./showcase
-        run: npx nuxt build --preset github_pages
+        run: |
+          cd ./showcase
+          bunx nuxt build --preset github_pages
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./showcase/.output/public
+  
   # Deployment job
   deploy:
     # Add a dependency to the build job
