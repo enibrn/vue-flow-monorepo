@@ -65,7 +65,7 @@ const checkDarkModeFlag = () => {
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
 
-      <v-app-bar-title>Application</v-app-bar-title>
+      <v-app-bar-title>Vue Flow Showcase</v-app-bar-title>
 
       <v-spacer />
 
